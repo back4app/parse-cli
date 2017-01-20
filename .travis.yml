@@ -8,7 +8,7 @@ branches:
 
 before_script:
   - rm -rf $HOME/gopath/src/github.com/ParsePlatform/parse-cli
-  - ln -s $HOME/gopath/src/github.com/back4app/parse-cli $HOME/gopath/src/github.com/ParsePlatform/parse-cli
+  - ln -s $HOME/gopath/src/github.com/luisholanda/parse-cli $HOME/gopath/src/github.com/ParsePlatform/parse-cli
 
 script:
   - go test -v ./...
