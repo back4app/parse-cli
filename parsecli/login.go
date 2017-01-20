@@ -82,11 +82,10 @@ func (l *Login) populateCreds(e *Env) error {
 		req := &http.Request{
 			Method: "GET",
 			URL:    &url.URL{Path: "accountkey"},
-			Header: map[string]string{
-				"X-Parse-Email": l.Credentials.Email,
-				"X-Parse-Password": password,
-			},
 		}
+
+		req.Header.Add("X-Parse-Email", l.Credentials.Email)
+		req.Header.Add("X-Parse-Password", password)
 
 		res := &struct {
 			AccountKey string `json:"accountKey"`
