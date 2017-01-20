@@ -83,7 +83,7 @@ func (l *Login) populateCreds(e *Env) error {
 			Method: "GET",
 			URL:    &url.URL{Path: "accountkey"},
 			Header: map[string]string{
-				"X-Parse-Email": email,
+				"X-Parse-Email": l.Credentials.Email,
 				"X-Parse-Password": password,
 			},
 		}
