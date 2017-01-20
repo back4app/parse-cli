@@ -91,10 +91,10 @@ func (l *Login) populateCreds(e *Env) error {
 			AccountKey string `json:"accountKey"`
 		}{}
 
-		l.Credentials.Token = res.AccountKey
-
-		if _, err := e.ParseAPIClient.Do(req, nil, res); err != nil {
+		if response, err := e.ParseAPIClient.Do(req, nil, res); err != nil {
 			return stackerr.Wrap(err)
+		} else if response.StatusCode == http.StatusOk {
+			l.Credentials.Token = response.AccountKey
 		}
 	}
 	return nil
