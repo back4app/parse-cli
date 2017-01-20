@@ -94,7 +94,11 @@ func (l *Login) populateCreds(e *Env) error {
 		if response, err := e.ParseAPIClient.Do(req, nil, res); err != nil {
 			return stackerr.Wrap(err)
 		} else if response.StatusCode == http.StatusOk {
-			l.Credentials.Token = response.AccountKey
+			defer response.Body.Close()
+			body, err := ioutil.ReadAll(response.body)
+			if err != nil {
+				l.Credentials.Token = body.AccountKey
+			}
 		}
 	}
 	return nil
