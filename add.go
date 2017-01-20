@@ -20,7 +20,7 @@ func (a *addCmd) addSelectedApp(
 	e *parsecli.Env,
 ) error {
 	if e.Type == parsecli.LegacyParseFormat || e.Type == parsecli.ParseFormat {
-		parseAppConfig, ok := appConfig.(*parsecli.ParserAppConfig)
+		parseAppConfig, ok := appConfig.(*parsecli.ParseAppConfig)
 		if !ok {
 			return stackerr.New("invalid parse app config passed.")
 		}

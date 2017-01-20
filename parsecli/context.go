@@ -1,11 +1,6 @@
 package parsecli
 
-import (
-	"fmt"
-	"net/http"
-
-	"github.com/facebookgo/parse"
-)
+import "github.com/facebookgo/parse"
 
 type Context struct {
 	Config    Config

@@ -211,15 +211,15 @@ Please refrain from creating a Parse project inside another Parse project.
 		if !n.configOnly {
 			var decision string
 			if isNew {
-				fm.Fprintf(e.Out, `
+				fmt.Fprintf(e.Out, `
 	You can either set up a blank project or create a sample Cloud Code project.
 	Please type "(b)lank" if you wish to setup a blank project, otherwise press ENTER: `)
 			} else {
-				fm.Fprintf(e.Out, `
+				fmt.Fprintf(e.Out, `
 	You can either set up a blank project or download the current deployed Cloud Code.
 	Please type "(b)lank" if you wish to setup a blank project, otherwise press ENTER: `)
 			}
-			fm.Fscanf(e.In, "%s\n", &decision)
+			fmt.Fscanf(e.In, "%s\n", &decision)
 			decision = strings.ToLower(strings.TrimSpace(decision))
 			if decision != "" && decision == "b" || decision == "blank" {
 				n.configOnly = true

@@ -12,7 +12,6 @@ import (
 	"github.com/ParsePlatform/parse-cli/parsecli"
 	"github.com/facebookgo/clock"
 	"github.com/facebookgo/stackerr"
-	"github.com/spf13/cobra"
 )
 
 func main() {
