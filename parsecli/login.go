@@ -93,7 +93,7 @@ func (l *Login) populateCreds(e *Env) error {
 
 		l.Credentials.Token = res.AccountKey
 
-		if response, err := e.ParseAPIClient.Do(req, nil, res); err != nil {
+		if _, err := e.ParseAPIClient.Do(req, nil, res); err != nil {
 			return stackerr.Wrap(err)
 		}
 	}
