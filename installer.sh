@@ -7,7 +7,8 @@ if [ -e ${TMP_FILE} ]; then
 fi
 echo "Fetching latest version ..."
 
-export latest=3.0.6-beta-4
+latest=3.0.6-beta-5
+# latest=$(curl https://parsecli.back4app.com/supported?version=latest)
 
 case `uname` in
   "Linux" )

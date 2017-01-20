@@ -14,10 +14,10 @@ script:
   - go test -v ./...
 before_deploy:
   - go get github.com/inconshreveable/mousetrap # temporary fix for travis build breaks for windows due to cobra dependency on mousetrap
-  - GOOS=darwin GOARCH=amd64 go build -o b4a -v github.com/back4app/parse-cli
-  - GOOS=windows GOARCH=386 go build -o b4a.exe -v github.com/back4app/parse-cli
-  - GOOS=linux GOARCH=386 go build -o b4a_linux -v github.com/back4app/parse-cli
-  - GOOS=linux GOARCH=arm go build -o b4a_linux_arm -v github.com/back4app/parse-cli
+  - GOOS=darwin GOARCH=amd64 go build -o b4a -v github.com/luiscmholanda/parse-cli
+  - GOOS=windows GOARCH=386 go build -o b4a.exe -v github.com/luiscmholanda/parse-cli
+  - GOOS=linux GOARCH=386 go build -o b4a_linux -v github.com/luiscmholanda/parse-cli
+  - GOOS=linux GOARCH=arm go build -o b4a_linux_arm -v github.com/luiscmholanda/parse-cli
 deploy:
   provider: releases
   api_key:
@@ -30,6 +30,6 @@ deploy:
     - b4a_linux_arm
   skip_cleanup: true
   on:
-    repo: back4app/parse-cli
+    repo: luiscmholanda/parse-cli
     tags: true
     condition: $TRAVIS_TAG =~ ^release_.*
