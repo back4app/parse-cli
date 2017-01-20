@@ -100,7 +100,7 @@ Hence, we are automatically configuring the default account key to be the same a
 		fmt.Fprintln(e.Out, `Successfully configured the default account key.
 To change the default account key in future use:
 
-       "parse configure accountkey -d"
+       "b4a configure accountkey -d"
 `)
 	}
 

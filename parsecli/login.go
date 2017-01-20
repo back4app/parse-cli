@@ -78,28 +78,6 @@ func (l *Login) populateCreds(e *Env) error {
 
 	if password != "" {
 		l.Credentials.Password = password
-
-		req := &http.Request{
-			Method: "GET",
-			URL:    &url.URL{Path: "accountkey"},
-		}
-
-		req.Header.Add("X-Parse-Email", l.Credentials.Email)
-		req.Header.Add("X-Parse-Password", password)
-
-		res := &struct {
-			AccountKey string `json:"accountKey"`
-		}{}
-
-		if response, err := e.ParseAPIClient.Do(req, nil, res); err != nil {
-			return stackerr.Wrap(err)
-		} else if response.StatusCode == http.StatusOk {
-			defer response.Body.Close()
-			body, err := ioutil.ReadAll(response.body)
-			if err != nil {
-				l.Credentials.Token = body.AccountKey
-			}
-		}
 	}
 	return nil
 }
@@ -324,9 +302,6 @@ Please login to Back4App using your email and password.`,
 			return err
 		}
 		apps.Login.Credentials = l.Credentials
-
-		// This should fix the problem of always asking login
-		l.StoreCredentials(e, l.Credentials.Email, &l.Credentials)
 
 		_, err = apps.RestFetchApps(e)
 		if err == nil {
