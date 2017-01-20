@@ -1,7 +1,6 @@
 package main
 
 import (
-	"github.com/ParsePlatform/parse-cli/herokucmd"
 	"github.com/ParsePlatform/parse-cli/parsecli"
 	"github.com/ParsePlatform/parse-cli/parsecmd"
 	"github.com/facebookgo/stackerr"
@@ -20,19 +19,12 @@ func (a *addCmd) addSelectedApp(
 	args []string,
 	e *parsecli.Env,
 ) error {
-	switch e.Type {
-	case parsecli.LegacyParseFormat, parsecli.ParseFormat:
-		parseAppConfig, ok := appConfig.(*parsecli.ParseAppConfig)
+	if e.Type == parsecli.LegacyParseFormat || e.Type == parsecli.ParseFormat {
+		parseAppConfig, ok := appConfig.(*parsecli.ParserAppConfig)
 		if !ok {
 			return stackerr.New("invalid parse app config passed.")
 		}
 		return parsecmd.AddSelectedParseApp(name, parseAppConfig, args, a.MakeDefault, a.verbose, e)
-	case parsecli.HerokuFormat:
-		herokuAppConfig, ok := appConfig.(*parsecli.HerokuAppConfig)
-		if !ok {
-			return stackerr.New("invalid heroku app config passed.")
-		}
-		return herokucmd.AddSelectedHerokuApp(name, herokuAppConfig, args, a.MakeDefault, a.verbose, e)
 	}
 
 	return stackerr.Newf("Unknown project type: %d.", e.Type)
@@ -77,17 +69,7 @@ func (a *addCmd) run(e *parsecli.Env, args []string) error {
 		return err
 	}
 
-	var appConfig parsecli.AppConfig
-	switch e.Type {
-	case parsecli.LegacyParseFormat, parsecli.ParseFormat:
-		appConfig = parsecmd.GetParseAppConfig(app)
-
-	case parsecli.HerokuFormat:
-		_, appConfig, err = herokucmd.GetLinkedHerokuAppConfig(app, e)
-		if err != nil {
-			return err
-		}
-	}
+	appConfig := parsecmd.GetParseAppConfig(app)
 
 	return a.addSelectedApp(app.Name, appConfig, args, e)
 }

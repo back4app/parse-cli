@@ -13,7 +13,6 @@ import (
 const (
 	LegacyParseFormat = iota
 	ParseFormat
-	HerokuFormat
 
 	ParseLocal   = ".parse.local"
 	ParseProject = ".parse.project"
@@ -101,25 +100,14 @@ func ConfigFromDir(dir string) (Config, error) {
 		return nil, canonicalize(err)
 	}
 	configFile := filepath.Join(dir, ParseLocal)
-	switch p.Type {
-	case ParseFormat:
+
+	if p.Type == ParseFormat {
 		c, err := readParseConfigFile(configFile)
 		if err != nil {
 			return nil, canonicalize(err)
 		}
 		if c.Applications == nil {
 			c.Applications = make(map[string]*ParseAppConfig)
-		}
-		c.ProjectConfig = p
-		return c, nil
-
-	case HerokuFormat:
-		c, err := readHerokuConfigFile(configFile)
-		if err != nil {
-			return nil, canonicalize(err)
-		}
-		if c.Applications == nil {
-			c.Applications = make(map[string]*HerokuAppConfig)
 		}
 		c.ProjectConfig = p
 		return c, nil
@@ -150,7 +138,7 @@ func StoreConfig(e *Env, c Config) error {
 			lconf,
 			filepath.Join(e.Root, LegacyConfigFile),
 		)
-	case ParseFormat, HerokuFormat:
+	case ParseFormat:
 		return writeConfigFile(c, filepath.Join(e.Root, ParseLocal))
 	}
 	return stackerr.Newf("Unknown project type: %d.", projectType)
@@ -193,7 +181,7 @@ func StoreProjectConfig(e *Env, c Config) error {
 			filepath.Join(e.Root, LegacyConfigFile),
 		)
 
-	case ParseFormat, HerokuFormat:
+	case ParseFormat:
 		return writeProjectConfig(p, filepath.Join(e.Root, ParseProject))
 	}
 
@@ -241,21 +229,14 @@ func PrintDefault(e *Env, defaultApp string) error {
 
 func SetDefault(e *Env, newDefault, defaultApp string, c Config) error {
 	projectType := c.GetProjectConfig().Type
-	switch projectType {
-	case LegacyParseFormat, ParseFormat:
+	if projectType == LegacyParseFormat || projectType == ParseFormat {
 		p, ok := c.(*ParseConfig)
 		if !ok {
 			return stackerr.New("Invalid Cloud Code config.")
 		}
 		return setParseDefault(e, newDefault, defaultApp, p)
-
-	case HerokuFormat:
-		h, ok := c.(*HerokuConfig)
-		if !ok {
-			return stackerr.New("Invalid Cloud Code config.")
-		}
-		return SetHerokuDefault(e, newDefault, defaultApp, h)
 	}
+
 
 	return stackerr.Newf("Unknown project type: %d.", projectType)
 }

@@ -3,21 +3,22 @@ go:
   - 1.5.3
 
 branches:
-  only:
-    - back4app
+  except:
+    - master # This is the original fork
+    - original # This is also the original fork
 
 before_script:
   - rm -rf $HOME/gopath/src/github.com/ParsePlatform/parse-cli
-  - ln -s $HOME/gopath/src/github.com/luisholanda/parse-cli $HOME/gopath/src/github.com/ParsePlatform/parse-cli
+  - ln -s $HOME/gopath/src/github.com/back4app/parse-cli $HOME/gopath/src/github.com/ParsePlatform/parse-cli
 
 script:
   - go test -v ./...
 before_deploy:
   - go get github.com/inconshreveable/mousetrap # temporary fix for travis build breaks for windows due to cobra dependency on mousetrap
-  - GOOS=darwin GOARCH=amd64 go build -o b4a -v github.com/luisholanda/parse-cli
-  - GOOS=windows GOARCH=386 go build -o b4a.exe -v github.com/luisholanda/parse-cli
-  - GOOS=linux GOARCH=386 go build -o b4a_linux -v github.com/luisholanda/parse-cli
-  - GOOS=linux GOARCH=arm go build -o b4a_linux_arm -v github.com/luisholanda/parse-cli
+  - GOOS=darwin GOARCH=amd64 go build -o b4a -v github.com/back4app/parse-cli
+  - GOOS=windows GOARCH=386 go build -o b4a.exe -v github.com/back4app/parse-cli
+  - GOOS=linux GOARCH=386 go build -o b4a_linux -v github.com/back4app/parse-cli
+  - GOOS=linux GOARCH=arm go build -o b4a_linux_arm -v github.com/back4app/parse-cli
 deploy:
   provider: releases
   api_key:
@@ -30,6 +31,6 @@ deploy:
     - b4a_linux_arm
   skip_cleanup: true
   on:
-    repo: luisholanda/parse-cli
+    repo: back4app/parse-cli
     tags: true
     condition: $TRAVIS_TAG =~ ^release_.*

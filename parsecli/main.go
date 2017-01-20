@@ -14,7 +14,6 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/bgentry/heroku-go"
 	"github.com/facebookgo/clock"
 	"github.com/facebookgo/ensure"
 	"github.com/facebookgo/parse"
@@ -42,7 +41,6 @@ type Env struct {
 	Exit            func(int)
 	Clock           clock.Clock
 	ParseAPIClient  *ParseAPIClient
-	HerokuAPIClient *heroku.Client
 }
 
 type Harness struct {

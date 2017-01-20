@@ -35,17 +35,6 @@ func newContext(e *Env, appName string) (*Context, error) {
 		},
 	)
 
-	if e.HerokuAPIClient != nil {
-		authToken, err := app.GetApplicationAuth(e)
-		if err != nil {
-			return nil, err
-		}
-		headers := make(http.Header)
-		headers.Add("Authorization", fmt.Sprintf("Bearer %s", authToken))
-		e.HerokuAPIClient.AdditionalHeaders = headers
-		e.HerokuAPIClient.UserAgent = UserAgent
-	}
-
 	return &Context{
 		AppName:   appName,
 		AppConfig: app,

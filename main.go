@@ -59,7 +59,7 @@ func main() {
 			e.Root = parsecli.GetLegacyProjectRoot(&e, cur)
 		}
 	}
-	if e.Type != parsecli.LegacyParseFormat && e.Type != parsecli.ParseFormat && e.Type != parsecli.HerokuFormat {
+	if e.Type != parsecli.LegacyParseFormat && e.Type != parsecli.ParseFormat {
 		fmt.Fprintf(e.Err, "Unknown project type %d.\n", e.Type)
 		os.Exit(1)
 	}
@@ -74,28 +74,9 @@ func main() {
 		os.Exit(1)
 	}
 	e.ParseAPIClient = apiClient
-	if e.Type == parsecli.HerokuFormat {
-		apiClient, err := parsecli.NewHerokuAPIClient(&e)
-		if err != nil {
-			fmt.Fprintln(e.Err, err)
-			os.Exit(1)
-		}
-		e.HerokuAPIClient = apiClient
-	}
 
-	var (
-		rootCmd *cobra.Command
-		command []string
-	)
-	var mode string
-	switch e.Type {
-	case parsecli.LegacyParseFormat, parsecli.ParseFormat:
-		mode = "parse"
-		command, rootCmd = parseRootCmd(&e)
-	case parsecli.HerokuFormat:
-		mode = "heroku"
-		command, rootCmd = herokuRootCmd(&e)
-	}
+	mode := "parse"
+	command, rootCmd := parseRootCmd(&e)
 
 	if len(command) == 0 || command[0] != "update" {
 		message, err := checkIfSupported(&e, parsecli.Version, mode, command...)
