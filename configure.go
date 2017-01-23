@@ -84,7 +84,7 @@ for email: %q
 			e.Out,
 			`
 Looks like this is the first time you have configured an account key.
-Note that "parse new" and "parse list" can automatically pick up a default key if present.
+Note that "b4a new" and "b4a list" can automatically pick up a default key if present.
 Otherwise, you'll have to explicitly set the PARSER_EMAIL common.Environment variable
 for them to pick the correct account key.
 Further, if the command line tool cannot find an account key for a configured email it will try to
@@ -193,7 +193,7 @@ func NewConfigureCmd(e *parsecli.Env) *cobra.Command {
 	keyCmd := &cobra.Command{
 		Use:     "accountkey",
 		Short:   "Store Parse account key on machine",
-		Long:    "Stores Parse account key in ~/.parse/netrc.",
+		Long:    "Stores Parse account key in ~/.back4app/netrc.",
 		Run:     parsecli.RunNoArgs(e, c.accountKey),
 		Aliases: []string{"key"},
 	}

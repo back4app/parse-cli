@@ -79,6 +79,7 @@ func (l *Login) populateCreds(e *Env) error {
 	if password != "" {
 		l.Credentials.Password = password
 	}
+
 	return nil
 }
 
